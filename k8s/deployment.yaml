@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: meureplicaset
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+      - name: site
+        image: zepolsoft/conversao-temperatura:v1
+        ports:
+          - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web-page
+spec:
+  selector:
+    app: web
+  ports:
+  - port: 8080
+    protocol: TCP
+  type: LoadBalancer
+
